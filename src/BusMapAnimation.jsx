@@ -31,7 +31,7 @@ const star = (
   <polygon points="500,160 507,178 526,178 511,189 517,208 500,197 483,208 489,189 474,178 493,178" fill="#FFD700" stroke="#333" strokeWidth="2" />
 );
 
-export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick = 0, busDelayMs = 0, factsDelayMs = 0, onFactsStart = () => {} }) {
+export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick = 0, busDelayMs = 0, factsDelayMs = 0, pathColor = '#673ab7', onFactsStart = () => {} }) {
   const busRef = useRef();
   const [length, setLength] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -164,8 +164,8 @@ export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick =
                opacity="0.95" />
 
         {/* Route and bus (in raw SVG coordinates) */}
-        {/* Southern Coastal Region (purple path) */}
-        <path id="route-path" d={pathD} fill="none" stroke="#673ab7" strokeWidth="14" strokeLinejoin="round" />
+        {/* Route path */}
+        <path id="route-path" d={pathD} fill="none" stroke={pathColor} strokeWidth="14" strokeLinejoin="round" />
         {/* Dotted line for the route */}
         <path d={pathD} fill="none" stroke="#FFD600" strokeWidth="4" strokeDasharray="12,12" />
         {/* Temporary waypoint marks (only before run) */}

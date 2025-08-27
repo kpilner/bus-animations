@@ -48,7 +48,7 @@ export default function FactsBox({ title: titleProp = 'Southern Coastal Region',
   const currentImg = typeof current === 'object' ? current.image : undefined;
 
   return (
-    <aside className={styles.box} style={{ top: positionTop, marginLeft: positionLeft }}>
+    <aside className={styles.box} style={{ top: positionTop, left: positionLeft }}>
       <h2
         contentEditable
         suppressContentEditableWarning

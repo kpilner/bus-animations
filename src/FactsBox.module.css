@@ -7,10 +7,9 @@
   border-radius: 10px;
   font-family: 'Segoe UI', sans-serif;
   box-shadow: 0 2px 8px rgba(103,58,183,0.08);
-  position: sticky;
+  position: fixed; /* fixed so top/left coords work reliably */
   top: 320px; /* default; can be overridden via inline style */
-  margin-left: -580px; /* default; can be overridden via inline style */
-  align-self: flex-start;
+  left: 20px; /* default; can be overridden via inline style */
 }
 .box h2 {
   color: #4527a0;
