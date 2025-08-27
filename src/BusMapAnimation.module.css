@@ -1,0 +1,25 @@
+.mapContainer {
+  display: flex;
+  flex-direction: column; /* stack instruction above image */
+  align-items: center;
+  margin-top: 2rem;
+  width: 100%;
+}
+.instruction {
+  position: relative;
+  top: -12px; /* slightly above image */
+  margin-bottom: 6px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  align-self: flex-end; /* push instruction to the right */
+  margin-right: 8px;
+}
+.mapSvg {
+  width: 100%;
+  max-width: 1700px; /* bigger main image */
+  height: auto;
+  background: #fafafa;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+}

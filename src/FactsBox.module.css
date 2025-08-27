@@ -1,0 +1,50 @@
+.box {
+  background: #ede7f6;
+  border-left: 6px solid #673ab7;
+  padding: 1.25rem 1.75rem;
+  margin: 1rem;
+  width: 460px;
+  border-radius: 10px;
+  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 2px 8px rgba(103,58,183,0.08);
+  position: sticky;
+  top: 320px; /* default; can be overridden via inline style */
+  margin-left: -580px; /* default; can be overridden via inline style */
+  align-self: flex-start;
+}
+.box h2 {
+  color: #4527a0;
+  margin-top: 0;
+  font-size: 1.6rem; /* bigger title */
+}
+.fact {
+  color: #333;
+  font-size: 1.4rem; /* bigger text */
+  line-height: 1.65;
+  min-height: 5.2em;
+}
+.image {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 0.25rem 0 0.5rem 0;
+}
+.controls {
+  display: none; /* hidden: no dots or labels */
+}
+.btn {
+  background: #673ab7;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: .4rem .8rem;
+  cursor: pointer;
+}
+.btn:hover { background: #5e35b1; }
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot, .dotActive {
+  width: 8px; height: 8px; border-radius: 50%; display: inline-block; cursor: pointer;
+}
+.dot { background: #b39ddb; }
+.dotActive { background: #4527a0; }

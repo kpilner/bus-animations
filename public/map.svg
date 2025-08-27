@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#cfe8ff"/>
+      <stop offset="100%" stop-color="#ffffff"/>
+    </linearGradient>
+    <linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#74b9ff"/>
+      <stop offset="100%" stop-color="#0984e3"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="1200" height="800" fill="url(#sky)"/>
+  <!-- Ocean on the left -->
+  <rect x="0" y="200" width="420" height="540" fill="url(#ocean)"/>
+  <!-- Coastline hint -->
+  <path d="M420,200 C400,260 430,320 410,380 C390,440 425,500 405,560 C385,620 420,680 400,740" fill="none" stroke="#2d3436" stroke-width="6" stroke-linecap="round" stroke-dasharray="14 10"/>
+  <!-- Land -->
+  <rect x="420" y="200" width="780" height="540" fill="#e8f5e9"/>
+  <!-- Labels -->
+  <text x="30" y="230" font-family="Segoe UI, Arial" font-size="22" fill="#083b66">Pacific Ocean</text>
+  <text x="450" y="230" font-family="Segoe UI, Arial" font-size="22" fill="#2e7d32">Coastal Land</text>
+  <!-- Decorative hills -->
+  <path d="M460,540 Q520,480 580,540 T700,540 T820,540 T940,540" fill="#c8e6c9" stroke="#a5d6a7"/>
+  <!-- Note -->
+  <text x="30" y="770" font-family="Segoe UI, Arial" font-size="14" fill="#555">Placeholder map (public/map.svg). Replace with your own image as needed.</text>
+</svg>
