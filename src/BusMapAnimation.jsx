@@ -31,7 +31,7 @@ const star = (
   <polygon points="500,160 507,178 526,178 511,189 517,208 500,197 483,208 489,189 474,178 493,178" fill="#FFD700" stroke="#333" strokeWidth="2" />
 );
 
-export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick = 0, busDelayMs = 0, factsDelayMs = 0, pathColor = '#673ab7', onFactsStart = () => {} }) {
+export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick = 0, resetTick = 0, busDelayMs = 0, factsDelayMs = 0, pathColor = '#673ab7', onFactsStart = () => {} }) {
   const busRef = useRef();
   const [length, setLength] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -72,6 +72,21 @@ export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick =
     }
   }, [redoTick, points.length, busDelayMs, factsDelayMs, onFactsStart]);
 
+  // Reset: stop, clear timers, bring bus back to first point and remove path
+  useEffect(() => {
+    if (!resetTick) return;
+    // clear timers
+    if (busStartTimer.current) { clearTimeout(busStartTimer.current); busStartTimer.current = null; }
+    if (factsStartTimer.current) { clearTimeout(factsStartTimer.current); factsStartTimer.current = null; }
+    // stop animation
+    setRunning(false);
+    setProgress(0);
+    setPoints(prev => {
+      const first = prev[0];
+      return first ? [first] : [];
+    });
+  }, [resetTick]);
+
   useEffect(() => {
     if (!running) return;
     let frame;
@@ -109,6 +124,11 @@ export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick =
       busX = pt.x;
       busY = pt.y;
     }
+  }
+  // If not running and we only have a starting point, ensure bus is at that point
+  if (!running && points.length === 1) {
+    busX = points[0].x;
+    busY = points[0].y;
   }
 
   // Click handler to add waypoints in the transformed group space
@@ -164,10 +184,13 @@ export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick =
                opacity="0.95" />
 
         {/* Route and bus (in raw SVG coordinates) */}
-        {/* Route path */}
-        <path id="route-path" d={pathD} fill="none" stroke={pathColor} strokeWidth="14" strokeLinejoin="round" />
-        {/* Dotted line for the route */}
-        <path d={pathD} fill="none" stroke="#FFD600" strokeWidth="4" strokeDasharray="12,12" />
+        {/* Only render route path when we have at least 2 points */}
+        {points.length >= 2 && (
+          <>
+            <path id="route-path" d={pathD} fill="none" stroke={pathColor} strokeWidth="14" strokeLinejoin="round" />
+            <path d={pathD} fill="none" stroke="#FFD600" strokeWidth="4" strokeDasharray="12,12" />
+          </>
+        )}
         {/* Temporary waypoint marks (only before run) */}
         {!running && points.map((p, i) => (
           <circle key={i} cx={p.x} cy={p.y} r={4} fill={i===0? '#4CAF50':'#333'} opacity="0.6" />

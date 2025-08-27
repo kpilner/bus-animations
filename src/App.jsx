@@ -8,6 +8,7 @@ function App() {
   const [url, setUrl] = useState('/map.png');
   const [autoFacts, setAutoFacts] = useState(false);
   const [redoTick, setRedoTick] = useState(0);
+  const [resetTick, setResetTick] = useState(0);
   const [showFacts, setShowFacts] = useState(true);
   const [busDelaySec, setBusDelaySec] = useState(1);
   const [factDelaySec, setFactDelaySec] = useState(1);
@@ -48,6 +49,9 @@ function App() {
         <button onClick={()=>{ setRedoTick(t=>t+1); }}>
           Redo Animation
         </button>
+        <button onClick={()=>{ setResetTick(t=>t+1); }}>
+          Reset
+        </button>
         <label>
           <input type="checkbox" checked={showFacts} onChange={(e)=>setShowFacts(e.target.checked)} /> Show facts box
         </label>
@@ -57,6 +61,7 @@ function App() {
         <BusMapAnimation
           backgroundUrl={url}
           redoTick={redoTick}
+          resetTick={resetTick}
           busDelayMs={Math.max(0, busDelaySec)*1000}
           factsDelayMs={Math.max(0, factDelaySec)*1000}
           pathColor={pathColor}
