@@ -23,11 +23,12 @@
   min-height: 5.2em;
 }
 .image {
-  width: 100%;
-  max-height: 220px;
-  object-fit: cover;
+  width: 200px;
+  height: 200px;
+  object-fit: contain; /* scale to fit 200x200 without cropping */
   border-radius: 8px;
-  margin: 0.25rem 0 0.5rem 0;
+  display: block;
+  margin: 0.5rem 0 0 0;
 }
 .controls {
   display: none; /* hidden: no dots or labels */

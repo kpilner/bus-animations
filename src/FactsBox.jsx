@@ -58,9 +58,6 @@ export default function FactsBox({ title: titleProp = 'Southern Coastal Region',
       >
         {title}
       </h2>
-      {currentImg && (
-        <img src={currentImg} alt="Fact visual" className={styles.image} />
-      )}
       <div
         className={styles.fact}
         contentEditable
@@ -72,6 +69,9 @@ export default function FactsBox({ title: titleProp = 'Southern Coastal Region',
       >
         {currentText}
       </div>
+      {currentImg && (
+        <img src={currentImg} alt="Fact visual" className={styles.image} />
+      )}
     </aside>
   );
 }
