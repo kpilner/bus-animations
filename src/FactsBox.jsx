@@ -7,7 +7,7 @@ const defaultFacts = [
   { text: 'It contains sandy beaches, coastal mountains, and the Channel Islands.' }
 ];
 
-export default function FactsBox({ title: titleProp = 'Southern Coastal Region', facts = defaultFacts, auto = true, intervalMs = 4000, positionTop = 320, positionLeft = -580 }) {
+export default function FactsBox({ title: titleProp = 'Southern Coastal Region', facts = defaultFacts, auto = true, intervalMs = 4000, positionTop = 320, positionLeft = -580, redoTick = 0 }) {
   const [index, setIndex] = useState(0);
   const [items, setItems] = useState(facts);
   const [title, setTitle] = useState(titleProp);
@@ -17,11 +17,20 @@ export default function FactsBox({ title: titleProp = 'Southern Coastal Region',
   // keep title in sync with parent input
   useEffect(() => setTitle(titleProp), [titleProp]);
 
+  // Auto-advance facts until the last item, then stop. Restart on redoTick.
   useEffect(() => {
     if (!auto) return;
-    const t = setInterval(() => setIndex(i => (i + 1) % (items.length || 1)), intervalMs);
-    return () => clearInterval(t);
-  }, [auto, intervalMs, items.length]);
+    if (items.length === 0) return;
+    if (index >= items.length - 1) return; // stop at last
+    const t = setTimeout(() => setIndex(i => Math.min(i + 1, items.length - 1)), intervalMs);
+    return () => clearTimeout(t);
+  }, [auto, intervalMs, items.length, index]);
+
+  // When redo is pressed, restart rotation from the first fact
+  useEffect(() => {
+    if (!redoTick) return;
+    setIndex(0);
+  }, [redoTick]);
 
   const onInput = (e) => {
     const text = e.currentTarget.innerText;

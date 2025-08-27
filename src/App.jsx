@@ -93,6 +93,7 @@ function App() {
               intervalMs={(window.__factInterval||5)*1000}
               positionTop={factsY}
               positionLeft={factsX}
+              redoTick={redoTick}
             />
           )}
         </div>
