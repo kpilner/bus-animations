@@ -17,8 +17,8 @@ function App() {
     'The Southern Coastal Region runs along the western part of the state and borders the Pacific Ocean.\nIt is about 400 miles long from the Bay Area to Mexico.\nIt contains sandy beaches, coastal mountains, and the Channel Islands.'
   );
   // Facts position (px). X controls left, Y controls top.
-  const [factsX, setFactsX] = useState(20); // px
-  const [factsY, setFactsY] = useState(320);  // px
+  const [factsX, setFactsX] = useState(500); // px
+  const [factsY, setFactsY] = useState(200);  // px
 
   // Parse facts: support optional image URL with delimiter " | "
   const factsList = useMemo(() =>
@@ -43,6 +43,7 @@ function App() {
         <label>Image URL: <input value={url} onChange={e=>setUrl(e.target.value)} style={{width:260}} /></label>
         <label>Bus start delay (sec): <input type="number" min="0" max="10" step="0.5" value={busDelaySec} onChange={(e)=>setBusDelaySec(Number(e.target.value)||0)} style={{width:70}} /></label>
         <label>First fact delay (sec): <input type="number" min="0" max="10" step="0.5" value={factDelaySec} onChange={(e)=>setFactDelaySec(Number(e.target.value)||0)} style={{width:70}} /></label>
+        <label>Fact interval (sec): <input type="number" min="2" max="15" step="1" value={Math.round(window.__factInterval||5)} onChange={(e)=>{window.__factInterval = Math.max(2, Math.min(15, parseInt(e.target.value)||5));}} style={{width:60}} /></label>
         <label>Path color: <input type="color" value={pathColor} onChange={(e)=>setPathColor(e.target.value)} /></label>
         <button onClick={()=>{ setRedoTick(t=>t+1); }}>
           Redo Animation
@@ -50,7 +51,6 @@ function App() {
         <label>
           <input type="checkbox" checked={showFacts} onChange={(e)=>setShowFacts(e.target.checked)} /> Show facts box
         </label>
-        <label>Fact interval (sec): <input type="number" min="2" max="15" step="1" value={Math.round(window.__factInterval||5)} onChange={(e)=>{window.__factInterval = Math.max(2, Math.min(15, parseInt(e.target.value)||5));}} style={{width:60}} /></label>
       </div>
 
       <div className={styles.content}>
