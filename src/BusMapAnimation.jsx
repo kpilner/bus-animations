@@ -39,6 +39,9 @@ export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick =
   const [running, setRunning] = useState(false);
   const [showRoute, setShowRoute] = useState(true);
   const [showWaypoints, setShowWaypoints] = useState(true);
+  // Remember the last on-path orientation to avoid a flip at the end frame
+  const lastDisplayAngleRef = useRef(0);
+  const lastFlippedRef = useRef(false);
   const busStartTimer = useRef(null);
   const factsStartTimer = useRef(null);
 
@@ -145,6 +148,14 @@ export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick =
   let flipped180 = false;
   if (displayAngle > 90) { displayAngle -= 180; flipped180 = true; }
   if (displayAngle < -90) { displayAngle += 180; flipped180 = true; }
+  // Freeze final-frame orientation so it doesn't snap/flip at the end
+  if (progress < 1) {
+    lastDisplayAngleRef.current = displayAngle;
+    lastFlippedRef.current = flipped180;
+  } else {
+    displayAngle = lastDisplayAngleRef.current;
+    flipped180 = lastFlippedRef.current;
+  }
 
   // Click handler to add waypoints in the transformed group space
   function handleSvgClick(e) {

@@ -9,11 +9,11 @@ function App() {
   const [autoFacts, setAutoFacts] = useState(false);
   const [redoTick, setRedoTick] = useState(0);
   const [resetTick, setResetTick] = useState(0);
-  const [showFacts, setShowFacts] = useState(true);
+  const [showFacts, setShowFacts] = useState(false);
   const [busDelaySec, setBusDelaySec] = useState(1);
   const [factDelaySec, setFactDelaySec] = useState(1);
   const [pathColor, setPathColor] = useState('#673ab7');
-  const [showPath, setShowPath] = useState(true);
+  const [showPath, setShowPath] = useState(false);
   const [factsTitle, setFactsTitle] = useState('Southern Coastal Region');
   const [factsInput, setFactsInput] = useState(
     'The Southern Coastal Region runs along the western part of the state and borders the Pacific Ocean.\nIt is about 400 miles long from the Bay Area to Mexico.\nIt contains sandy beaches, coastal mountains, and the Channel Islands.'
