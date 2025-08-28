@@ -13,6 +13,7 @@ function App() {
   const [busDelaySec, setBusDelaySec] = useState(1);
   const [factDelaySec, setFactDelaySec] = useState(1);
   const [pathColor, setPathColor] = useState('#673ab7');
+  const [showPath, setShowPath] = useState(true);
   const [factsTitle, setFactsTitle] = useState('Southern Coastal Region');
   const [factsInput, setFactsInput] = useState(
     'The Southern Coastal Region runs along the western part of the state and borders the Pacific Ocean.\nIt is about 400 miles long from the Bay Area to Mexico.\nIt contains sandy beaches, coastal mountains, and the Channel Islands.'
@@ -46,6 +47,9 @@ function App() {
         <label>First fact delay (sec): <input type="number" min="0" max="10" step="0.5" value={factDelaySec} onChange={(e)=>setFactDelaySec(Number(e.target.value)||0)} style={{width:70}} /></label>
         <label>Fact interval (sec): <input type="number" min="2" max="15" step="1" value={Math.round(window.__factInterval||5)} onChange={(e)=>{window.__factInterval = Math.max(2, Math.min(15, parseInt(e.target.value)||5));}} style={{width:60}} /></label>
         <label>Path color: <input type="color" value={pathColor} onChange={(e)=>setPathColor(e.target.value)} /></label>
+        <label>
+          <input type="checkbox" checked={showPath} onChange={(e)=>setShowPath(e.target.checked)} /> Draw path
+        </label>
         <button onClick={()=>{ setRedoTick(t=>t+1); }}>
           Redo Animation
         </button>
@@ -65,6 +69,7 @@ function App() {
           busDelayMs={Math.max(0, busDelaySec)*1000}
           factsDelayMs={Math.max(0, factDelaySec)*1000}
           pathColor={pathColor}
+          showPath={showPath}
           onFactsStart={()=>setAutoFacts(true)}
         />
         <div className={styles.sidebar}>

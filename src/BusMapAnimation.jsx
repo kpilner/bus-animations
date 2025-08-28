@@ -31,7 +31,7 @@ const star = (
   <polygon points="500,160 507,178 526,178 511,189 517,208 500,197 483,208 489,189 474,178 493,178" fill="#FFD700" stroke="#333" strokeWidth="2" />
 );
 
-export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick = 0, resetTick = 0, busDelayMs = 0, factsDelayMs = 0, pathColor = '#673ab7', onFactsStart = () => {} }) {
+export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick = 0, resetTick = 0, busDelayMs = 0, factsDelayMs = 0, pathColor = '#673ab7', showPath = true, onFactsStart = () => {} }) {
   const busRef = useRef();
   const [length, setLength] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -198,11 +198,14 @@ export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick =
                preserveAspectRatio="xMidYMid meet"
                opacity="0.95" />
 
-        {/* Route and bus (in raw SVG coordinates) */}
-        {/* Only render route path when we have at least 2 points */}
-        {points.length >= 2 && showRoute && (
+        {/* Measurement path for animation (always present but hidden) */}
+        {points.length >= 2 && (
+          <path id="route-path" d={pathD} fill="none" stroke="none" style={{visibility:'hidden'}} />
+        )}
+        {/* Visible route (only when enabled and at least 2 points) */}
+        {points.length >= 2 && showRoute && showPath && (
           <>
-            <path id="route-path" d={pathD} fill="none" stroke={pathColor} strokeWidth="14" strokeLinejoin="round" />
+            <path d={pathD} fill="none" stroke={pathColor} strokeWidth="14" strokeLinejoin="round" />
             <path d={pathD} fill="none" stroke="#FFD600" strokeWidth="4" strokeDasharray="12,12" />
           </>
         )}
