@@ -235,8 +235,10 @@ export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick =
                 {/* Removed start label flash */}
               {/* Headlight and tail light (not flipped): swap sides based on direction */}
               {(() => {
-                const headX = flipped180 ? 46 : 2;
-                const tailX = flipped180 ? 2 : 46;
+                // If we normalized by 180° (flipped180), the actual heading is left-ish,
+                // so the front (headlight) should be on the left side (x=2).
+                const headX = flipped180 ? 2 : 46;
+                const tailX = flipped180 ? 46 : 2;
                 return (
                   <>
                     <circle cx={headX} cy="20" r="2" fill="#fff59d" stroke="#fdd835" />
