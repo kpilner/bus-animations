@@ -202,7 +202,7 @@ export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick =
           const wheelR = 5.5;
           const wheelAngle = length ? (progress * length) / wheelR : 0;
           return (
-            <g ref={busRef} transform={`translate(${busX - 24},${busY - 16 + bounce}) rotate(${angle},24,16)`}>
+            <g ref={busRef} transform={`translate(${busX - 24},${busY - 16 + bounce})`}>
               {/* shadow */}
               <ellipse cx="22" cy="28" rx="18" ry="4" fill="rgba(0,0,0,0.15)" />
               {/* Bus body two-tone */}
