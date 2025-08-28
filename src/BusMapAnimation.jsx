@@ -131,6 +131,12 @@ export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick =
     busY = points[0].y;
   }
 
+  // Keep bus upright while facing direction of path: limit rotation to [-90, 90] and flip horizontally when heading left
+  let displayAngle = angle;
+  let flipX = false;
+  if (displayAngle > 90) { displayAngle -= 180; flipX = true; }
+  if (displayAngle < -90) { displayAngle += 180; flipX = true; }
+
   // Click handler to add waypoints in the transformed group space
   function handleSvgClick(e) {
     // Determine SVG coordinates
@@ -202,39 +208,49 @@ export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick =
           const wheelR = 5.5;
           const wheelAngle = length ? (progress * length) / wheelR : 0;
           return (
-            <g ref={busRef} transform={`translate(${busX - 24},${busY - 16 + bounce})`}>
-              {/* shadow */}
-              <ellipse cx="22" cy="28" rx="18" ry="4" fill="rgba(0,0,0,0.15)" />
-              {/* Bus body two-tone */}
-              <rect x="2" y="2" width="44" height="26" rx="6" fill="#ffca28" stroke="#1a237e" strokeWidth="2" />
-              <rect x="2" y="14" width="44" height="14" rx="0" fill="#f9a825" />
-              {/* Roof stripe */}
-              <rect x="2" y="2" width="44" height="4" fill="#1a237e" />
-              {/* Windows */}
-              <rect x="8" y="6" width="9" height="7" rx="1.5" fill="#bbdefb" stroke="#90caf9" />
-              <rect x="20" y="6" width="9" height="7" rx="1.5" fill="#bbdefb" stroke="#90caf9" />
-              <rect x="32" y="6" width="9" height="7" rx="1.5" fill="#bbdefb" stroke="#90caf9" />
-              {/* Headlight and tail light */}
-              <circle cx="46" cy="20" r="2" fill="#fff59d" stroke="#fdd835" />
-              <rect x="2" y="20" width="3" height="3" fill="#ef5350" />
-              {/* Door hint */}
-              <rect x="18" y="14" width="7" height="12" fill="rgba(255,255,255,0.15)" stroke="#fbc02d" />
-              {/* Wheels with hubcaps and rotation */}
-              <g transform={`rotate(${wheelAngle * 57.2958},12,26)`}>
-                <circle cx="12" cy="26" r="6" fill="#212121" />
-                <circle cx="12" cy="26" r="2" fill="#9e9e9e" />
-              </g>
-              <g transform={`rotate(${wheelAngle * 57.2958},34,26)`}>
-                <circle cx="34" cy="26" r="6" fill="#212121" />
-                <circle cx="34" cy="26" r="2" fill="#9e9e9e" />
-              </g>
-              {/* Start label */}
-              {running && progress < 0.02 && (
-                <g>
-                  <rect x="-10" y="-24" width="46" height="18" rx="6" fill="#4CAF50" />
-                  <text x="13" y="-10" textAnchor="middle" fontSize="10" fill="#fff">Start Here</text>
+            <g ref={busRef} transform={`translate(${busX - 24},${busY - 16 + bounce}) rotate(${displayAngle},24,16)`}>
+              <g transform={flipX ? 'translate(24,16) scale(-1,1) translate(-24,-16)' : undefined}>
+                {/* shadow */}
+                <ellipse cx="22" cy="28" rx="18" ry="4" fill="rgba(0,0,0,0.15)" />
+                {/* Bus body two-tone */}
+                <rect x="2" y="2" width="44" height="26" rx="6" fill="#ffca28" stroke="#1a237e" strokeWidth="2" />
+                <rect x="2" y="14" width="44" height="14" rx="0" fill="#f9a825" />
+                {/* Roof stripe */}
+                <rect x="2" y="2" width="44" height="4" fill="#1a237e" />
+                {/* Windows */}
+                <rect x="8" y="6" width="9" height="7" rx="1.5" fill="#bbdefb" stroke="#90caf9" />
+                <rect x="20" y="6" width="9" height="7" rx="1.5" fill="#bbdefb" stroke="#90caf9" />
+                <rect x="32" y="6" width="9" height="7" rx="1.5" fill="#bbdefb" stroke="#90caf9" />
+                {/* Door hint */}
+                <rect x="18" y="14" width="7" height="12" fill="rgba(255,255,255,0.15)" stroke="#fbc02d" />
+                {/* Wheels with hubcaps and rotation */}
+                <g transform={`rotate(${wheelAngle * 57.2958},12,26)`}>
+                  <circle cx="12" cy="26" r="6" fill="#212121" />
+                  <circle cx="12" cy="26" r="2" fill="#9e9e9e" />
                 </g>
-              )}
+                <g transform={`rotate(${wheelAngle * 57.2958},34,26)`}>
+                  <circle cx="34" cy="26" r="6" fill="#212121" />
+                  <circle cx="34" cy="26" r="2" fill="#9e9e9e" />
+                </g>
+                {/* Start label */}
+                {running && progress < 0.02 && (
+                  <g>
+                    <rect x="-10" y="-24" width="46" height="18" rx="6" fill="#4CAF50" />
+                    <text x="13" y="-10" textAnchor="middle" fontSize="10" fill="#fff">Start Here</text>
+                  </g>
+                )}
+              </g>
+              {/* Headlight and tail light (not flipped): swap sides based on direction */}
+              {(() => {
+                const headX = flipX ? 2 : 46;
+                const tailX = flipX ? 46 : 2;
+                return (
+                  <>
+                    <circle cx={headX} cy="20" r="2" fill="#fff59d" stroke="#fdd835" />
+                    <rect x={tailX} y="20" width="3" height="3" fill="#ef5350" />
+                  </>
+                );
+              })()}
             </g>
           );
         })()}
