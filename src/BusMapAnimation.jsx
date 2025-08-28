@@ -37,6 +37,8 @@ export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick =
   const [progress, setProgress] = useState(0);
   const [points, setPoints] = useState([]);
   const [running, setRunning] = useState(false);
+  const [showRoute, setShowRoute] = useState(true);
+  const [showWaypoints, setShowWaypoints] = useState(true);
   const busStartTimer = useRef(null);
   const factsStartTimer = useRef(null);
 
@@ -63,7 +65,13 @@ export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick =
       // stop then schedule restart after delays
       setRunning(false);
       setProgress(0);
+      // Hide the previously drawn route until the animation restarts
+      setShowRoute(false);
+      // Hide temporary waypoints during redo waiting period
+      setShowWaypoints(false);
       busStartTimer.current = setTimeout(() => {
+        setShowRoute(true);
+        setShowWaypoints(true);
         setRunning(true);
       }, Math.max(0, busDelayMs));
       factsStartTimer.current = setTimeout(() => {
@@ -192,14 +200,14 @@ export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick =
 
         {/* Route and bus (in raw SVG coordinates) */}
         {/* Only render route path when we have at least 2 points */}
-        {points.length >= 2 && (
+        {points.length >= 2 && showRoute && (
           <>
             <path id="route-path" d={pathD} fill="none" stroke={pathColor} strokeWidth="14" strokeLinejoin="round" />
             <path d={pathD} fill="none" stroke="#FFD600" strokeWidth="4" strokeDasharray="12,12" />
           </>
         )}
         {/* Temporary waypoint marks (only before run) */}
-        {!running && points.map((p, i) => (
+        {!running && showWaypoints && points.map((p, i) => (
           <circle key={i} cx={p.x} cy={p.y} r={4} fill={i===0? '#4CAF50':'#333'} opacity="0.6" />
         ))}
         {/* Bus */}
