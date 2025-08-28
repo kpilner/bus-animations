@@ -131,11 +131,12 @@ export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick =
     busY = points[0].y;
   }
 
-  // Keep bus upright while facing direction of path: limit rotation to [-90, 90] and flip horizontally when heading left
+  // Keep bus from going upside down: constrain to [-90, 90] by rotating 180° when necessary
+  // Allow it to follow the path turns, but avoid wheels-up orientation.
   let displayAngle = angle;
-  let flipX = false;
-  if (displayAngle > 90) { displayAngle -= 180; flipX = true; }
-  if (displayAngle < -90) { displayAngle += 180; flipX = true; }
+  let flipped180 = false;
+  if (displayAngle > 90) { displayAngle -= 180; flipped180 = true; }
+  if (displayAngle < -90) { displayAngle += 180; flipped180 = true; }
 
   // Click handler to add waypoints in the transformed group space
   function handleSvgClick(e) {
@@ -209,7 +210,6 @@ export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick =
           const wheelAngle = length ? (progress * length) / wheelR : 0;
           return (
             <g ref={busRef} transform={`translate(${busX - 24},${busY - 16 + bounce}) rotate(${displayAngle},24,16)`}>
-              <g transform={flipX ? 'translate(24,16) scale(-1,1) translate(-24,-16)' : undefined}>
                 {/* shadow */}
                 <ellipse cx="22" cy="28" rx="18" ry="4" fill="rgba(0,0,0,0.15)" />
                 {/* Bus body two-tone */}
@@ -232,18 +232,11 @@ export default function BusMapAnimation({ backgroundUrl = '/map.png', redoTick =
                   <circle cx="34" cy="26" r="6" fill="#212121" />
                   <circle cx="34" cy="26" r="2" fill="#9e9e9e" />
                 </g>
-                {/* Start label */}
-                {running && progress < 0.02 && (
-                  <g>
-                    <rect x="-10" y="-24" width="46" height="18" rx="6" fill="#4CAF50" />
-                    <text x="13" y="-10" textAnchor="middle" fontSize="10" fill="#fff">Start Here</text>
-                  </g>
-                )}
-              </g>
+                {/* Removed start label flash */}
               {/* Headlight and tail light (not flipped): swap sides based on direction */}
               {(() => {
-                const headX = flipX ? 2 : 46;
-                const tailX = flipX ? 46 : 2;
+                const headX = flipped180 ? 46 : 2;
+                const tailX = flipped180 ? 2 : 46;
                 return (
                   <>
                     <circle cx={headX} cy="20" r="2" fill="#fff59d" stroke="#fdd835" />
